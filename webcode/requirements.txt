@@ -1,6 +1,0 @@
-cs50
-flask
-flask_session
-werkzeug 
-requests
-python-dotenv
