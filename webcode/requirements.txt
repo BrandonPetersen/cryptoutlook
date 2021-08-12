@@ -1,12 +1,6 @@
-os
 cs50
 flask
 flask_session
-tempfile
-werkzeug.exceptions 
-werkzeug.security
+werkzeug 
 requests
-json
-re
-urllib.parse
-json
+python-dotenv
