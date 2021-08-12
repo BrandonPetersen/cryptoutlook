@@ -102,6 +102,7 @@ def search3():
             search = search1.json()
             coindata = requests.get("https://api.coingecko.com/api/v3/coins/bitcoin?market_data=false&community_data=false&developer_data=false&sparkline=false", headers = {"accept" : "application/json"})
             coin = coindata.json()
+            s1 = re.sub('<[^>]+>', '', coin['description']['en'])
             coin['description']['en'] = s1
             flash("Must Provide Coin Name or ID")
             return render_template("search.html", search = search, coin = coin)
@@ -119,10 +120,11 @@ def search3():
                 search = search1.json()
                 coindata = requests.get("https://api.coingecko.com/api/v3/coins/bitcoin?market_data=false&community_data=false&developer_data=false&sparkline=false", headers = {"accept" : "application/json"})
                 coin = coindata.json()
+                s1 = re.sub('<[^>]+>', '', coin['description']['en'])
                 coin['description']['en'] = s1
                 flash("Coin not found, please input valid coin ID or name of supported coin")
                 return render_template("search.html", search = search, coin = coin)
-           
+            s1 = re.sub('<[^>]+>', '', coin['description']['en'])
             coin['description']['en'] = s1    
             return render_template("search.html", search = search, coin = coin)
         
@@ -131,7 +133,7 @@ def search3():
             search = search1.json()
             coindata = requests.get("https://api.coingecko.com/api/v3/coins/"+coin1[2]+"?market_data=false&community_data=false&developer_data=false&sparkline=false", headers = {"accept" : "application/json"})
             coin = coindata.json()
-            
+            s1 = re.sub('<[^>]+>', '', coin['description']['en'])
             coin['description']['en'] = s1
             return render_template("search.html", search = search, coin = coin)
     else:
@@ -139,7 +141,7 @@ def search3():
         search = search1.json()
         coindata = requests.get("https://api.coingecko.com/api/v3/coins/bitcoin?market_data=false&community_data=false&developer_data=false&sparkline=false", headers = {"accept" : "application/json"})
         coin = coindata.json()
-        
+        s1 = re.sub('<[^>]+>', '', coin['description']['en'])
         coin['description']['en'] = s1
         return render_template("search.html", search = search, coin = coin)
     
@@ -159,11 +161,11 @@ def searchlink(coin):
             search = search1.json()
             coindata = requests.get("https://api.coingecko.com/api/v3/coins/bitcoin?market_data=false&community_data=false&developer_data=false&sparkline=false", headers = {"accept" : "application/json"})
             coin = coindata.json()
-            
+            s1 = re.sub('<[^>]+>', '', coin['description']['en'])
             coin['description']['en'] = s1
             flash("Coin not found, please input valid coin ID or name of supported coin")
             return render_template("search.html", search = search, coin = coin)
-        
+        s1 = re.sub('<[^>]+>', '', coin['description']['en'])
         coin['description']['en'] = s1    
         return render_template("search.html", search = search, coin = coin)
         
@@ -172,7 +174,7 @@ def searchlink(coin):
         search = search1.json()
         coindata = requests.get("https://api.coingecko.com/api/v3/coins/"+coin1[2]+"?market_data=false&community_data=false&developer_data=false&sparkline=false", headers = {"accept" : "application/json"})
         coin = coindata.json()
-        
+        s1 = re.sub('<[^>]+>', '', coin['description']['en'])
         coin['description']['en'] = s1
         return render_template("search.html", search = search, coin = coin)
     
