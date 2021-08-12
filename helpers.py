@@ -2,7 +2,7 @@ import os
 import requests
 import urllib.parse
 import requests
-from json import json
+import json
 
 from flask import redirect, render_template, request, session, flash
 from functools import wraps
