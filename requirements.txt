@@ -1,10 +1,9 @@
 cs50
 flask
 flask_session
-werkzeug.exceptions 
-werkzeug.security
+werkzeug 
 requests
 json
 re
-urllib.parse
+urllib
 json
