@@ -3,7 +3,6 @@ flask
 flask_session
 werkzeug 
 requests
-json
 re
 urllib
 json
