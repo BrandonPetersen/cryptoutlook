@@ -1,0 +1,12 @@
+os
+cs50
+flask
+flask_session
+tempfile
+werkzeug.exceptions 
+werkzeug.security
+requests
+json
+re
+urllib.parse
+json
