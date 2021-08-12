@@ -1,4 +1,12 @@
+os
 cs50
-Flask
-Flask-Session
+flask
+flask_session
+tempfile
+werkzeug.exceptions 
+werkzeug.security
 requests
+json
+re
+urllib.parse
+json
