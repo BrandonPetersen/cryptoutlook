@@ -75,7 +75,7 @@ def index():
     events = event.json()
     
     
-    return render_template("index.html", bitprice = bitprice, etherprice = etherprice, tetherprice = tetherprice, dogeprice = dogeprice, bitcap = bitcap, ethercap = ethercap, tethercap = tethercap,
+    return render_template("/home/brandonpetersen/cryptoutlook/webcode/index.html", bitprice = bitprice, etherprice = etherprice, tetherprice = tetherprice, dogeprice = dogeprice, bitcap = bitcap, ethercap = ethercap, tethercap = tethercap,
     dogecap = dogecap, bitvol = bitvol, ethervol = ethervol, tethervol = tethervol, dogevol = dogevol, bit24 = bit24, ether24 = ether24, tether24 = tether24, doge24 = doge24, events = events)
 
 
