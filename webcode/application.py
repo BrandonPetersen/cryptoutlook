@@ -93,7 +93,7 @@ def trending():
     
 
 @app.route("/search",  methods=["GET", "POST"])
-def search():
+def search3():
     if request.method == "POST":
         if not request.form.get("symbol"):
             search1 = requests.get("https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1", headers = {"accept" : "application/json"})
