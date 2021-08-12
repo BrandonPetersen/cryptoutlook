@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block banner %}
+    
+{% endblock %}
+
+{% block main%}
+<form action="/search" method="post" style = "margin-bottom:50px;">
+  <div class="form-group">
+    <input autocomplete="off" autofocus class="form-control" name="symbol" placeholder="Input Coin Name or ID" type="text" required>
+    <select id="time" name="Select Time Range" class="form-control" required>
+      <option value="1">24 hours</option>
+      <option value="7">1 week</option>
+      <option value="30">30 days</option>
+      <option value="max">Max Value</option>
+  </select>
+  <button class="btn btn-primary" type="submit" style = "margin-left: 8px; margin-bottom: 4px;" id = "searchbtn">Search</button>
+  </div>
+</form>
+
+<h2 style = " margin-bottom:none;"><img src = "{{coin['image']['small']}}" style = "padding-bottom:6px;">&nbsp;&nbsp;{{coin["name"]}} Data</h2>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script>
+
+google.charts.load('current', {packages: ['corechart', 'line']});
+google.charts.setOnLoadCallback(drawBasic);
+
+let search = JSON.parse('{{ search | tojson }}');
+
+
+function drawBasic() {
+      
+      
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'time');
+      data.addColumn('number', "{{coin['name']}}")
+      data.addColumn({type: 'string', role: 'tooltip'});
+      
+      for (var i = 0; i < search['prices'].length; i++){
+        const t = new Date(search['prices'][i][0]);
+        const date = ('0' + t.getDate()).slice(-2);
+        const month = ('0' + (t.getMonth() + 1)).slice(-2);
+        const year = t.getFullYear();
+        const hours = ('0' + t.getHours()).slice(-2);
+        const minutes = ('0' + t.getMinutes()).slice(-2);
+        const seconds = ('0' + t.getSeconds()).slice(-2);
+        const time = `${hours}:${minutes}:${seconds}, ${month}/${date}/${year}`;
+        
+        data.addRow(
+          [new Date(search['prices'][i][0]), search['prices'][i][1], '$'+ search['prices'][i][1].toFixed(4) + ' at ' + time]
+          )
+      }
+
+      var options = {
+        vAxis: {
+          title: 'Price in USD'
+        }
+        , hAxis: {
+          title: 'Time'
+        }
+      };
+      
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+      chart.draw(data, options);
+}
+    
+
+</script>
+
+<div id="chart_div" style = "width: 97%; min-height:300px; text-align:center"></div>
+
+<h2 style = "padding-bottom:30px;padding-top:15px;">Current Market Cap Rank: {{coin['market_cap_rank']}}</h2>
+
+<div class = "border1 sides-2">
+<h2 style = "padding-top:15px;">{{coin['name']}} Community Sentiment:</h2>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Community Sentiment');
+        data.addColumn('number', 'Percentage');
+        data.addRow(
+          ['Positive', Number("{{coin['sentiment_votes_up_percentage']}}")]
+        );
+        data.addRow(
+          ['Negative', Number("{{coin['sentiment_votes_down_percentage']}}")]
+        );
+  
+      
+        var options = {
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+<div id="piechart" style="width: 100%; height: 500px; display:block; margin: 0 auto;"></div>
+</div>
+<div class = "border1 sides-2">
+  <h2 style = "padding-top:15px;">{{coin['name']}} Description:</h2>
+  <p>{{coin['description']['en']}}</p>
+</div>
+
+<div class = "buttons">
+  <form action="{{coin['links']['homepage'][0]}}" method="get" target="_blank">
+    <button class="btn-hover color-9" type = "submit">Learn More</button>
+  </form>
+</div>
+
+{% endblock %}
