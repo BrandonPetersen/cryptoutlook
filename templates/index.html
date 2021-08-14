@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block banner %}
+    <div id="carouselExampleControls1" class="carousel slide" data-ride="carousel" data-interval="10500">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <div class="carousel-caption">
+            <p><a href = '/searchlink/bitcoin' class = "carousellink"><img src = "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579" alt="Bitcoin Image" style = "width: 25px; max-height: 25px; margin-bottom:4px"> Bitcoin</a> &emsp;&emsp; <span class = "nowrap">Price: {{bitprice}}</span> &emsp; <span class = "nowrap">24 Hour Change: {% if bit24 >= 0 %}<span style = "color: green">+{{bit24}}%</span>{% endif %}{% if bit24 < 0 %}<span style = "color: red">{{bit24}}%</span>{% endif %}</span> &emsp; <span class = "nowrap">Market Cap: {{bitcap}}</span> &emsp; <span class = "nowrap">24 Hour Volume: {{bitvol}}</span></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-caption">
+            <p><a href = '/searchlink/ethereum' class = "carousellink"><img src = "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880" alt="Ethereum Image" style = "width: 25px; max-height: 25px; margin-bottom:4px"> Ethereum</a> &emsp;&emsp; <span class = "nowrap">Price: {{etherprice}}</span> &emsp; <span class = "nowrap">24 Hour Change: {% if ether24 >= 0 %}<span style = "color: green">+{{ether24}}%</span>{% endif %}{% if ether24 < 0 %}<span style = "color: red">{{ether24}}%</span>{% endif %}</span> &emsp; <span class = "nowrap">Market Cap: {{ethercap}}</span> &emsp; <span class = "nowrap">24 Hour Volume: {{ethervol}}</span></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-caption">
+            <p><a href = '/searchlink/dogecoin' class = "carousellink"><img src = "https://assets.coingecko.com/coins/images/5/large/dogecoin.png?1547792256" alt="Dogecoin Image" style = "width: 25px; max-height: 25px; margin-bottom:4px"> Dogecoin</a> &emsp;&emsp; <span class = "nowrap">Price: {{dogeprice}}</span> &emsp; <span class = "nowrap">24 Hour Change: {% if doge24 >= 0 %}<span style = "color: green">+{{doge24}}%</span>{% endif %}{% if doge24 < 0 %}<span style = "color: red">{{doge24}}%</span>{% endif %}</span> &emsp; <span class = "nowrap">Market Cap: {{dogecap}}</span>&emsp; <span class = "nowrap">24 Hour Volume: {{dogevol}}</span></p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <div class="carousel-caption">
+            <p><a href = '/searchlink/tether' class = "carousellink"><img src = "https://assets.coingecko.com/coins/images/325/large/Tether-logo.png?1598003707" alt="Tether Image" style = "width: 25px; max-height: 25px; margin-bottom:4px"> Tether</a> &emsp;&emsp; <span class = "nowrap">Price: {{tetherprice}}</span> &emsp; <span class = "nowrap">24 Hour Change: {% if tether24 >= 0 %}<span style = "color: green">+{{tether24}}%</span>{% endif %}{% if tether24 < 0 %}<span style = "color: red">{{tether24}}%</span>{% endif %}</span> &emsp; <span class = "nowrap">Market Cap: {{tethercap}}</span> &emsp; <span class = "nowrap">24 Hour Volume: {{tethervol}}</span></p>
+          </div>
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleControls1" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleControls1" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+{% endblock %}
+
+{% block main%}
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      let coindata = JSON.parse('{{ globaldata["data"]["market_cap_percentage"] | tojson }}');
+      
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Ticker Symbol');
+        data.addColumn('number', 'Total Market cap');
+        
+        var total = 0;
+        for(var key in coindata) {
+          total += coindata[key]
+          data.addRow(
+            [String (key), Number(coindata[key])]
+          );
+        }
+        data.addRow(
+          ["Other", 100-total]
+        );
+        
+  
+      
+        var options = {
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+<h2>Total Market Cap Makeup:</h2>
+<div id="piechart" style="width: 100%; height: 500px; display:block; margin: 0 auto; margin-bottom: 50px;"></div>
+
+<h2>Upcoming Crypto Events:</h2>
+{% if events["count"] == 0 %}
+<p>Sorry, our servers aren't aware of any upcoming Crypto events. Please check back soon!</p>
+{% else %}
+
+{% for event in events["data"] %}
+<div class = "border1 sides-2">
+  <h3 class = "event">{{event["title"]}}</h3>
+  <p>Description: {{event["description"]}}</p>
+  <p>Start Date: {{event["start_date"]}}</p>
+  <p>End Date: {{event["end_date"]}}</p>
+  <p>City: {{event["city"]}}</p>
+  <p>Country: {{event["country"]}}</p>
+  <div class = "buttons">
+    <form action="{{event['website']}}" method="get" target="_blank">
+      <button class="btn-hover color-9" type = "submit">Learn More</button>
+    </form>
+  </div>
+</div>
+
+{% endfor %}
+
+{% endif %}
+{% endblock %}
